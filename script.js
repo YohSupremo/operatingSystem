@@ -117,20 +117,12 @@ function createVideoCard(video, category, sectionKey) {
   return card;
 }
 
-function renderSection(containerId, videos, category, sectionKey, dropdownId) {
+function renderSection(containerId, videos, category, sectionKey) {
   const grid = document.getElementById(containerId);
-  const dropdown = document.getElementById(dropdownId);
 
   videos.forEach((video) => {
     const card = createVideoCard(video, category, sectionKey);
     grid.appendChild(card);
-
-    const item = document.createElement("li");
-    const link = document.createElement("a");
-    link.href = `#${card.id}`;
-    link.textContent = video.title;
-    item.appendChild(link);
-    dropdown.appendChild(item);
   });
 }
 
@@ -165,7 +157,7 @@ function setupDropdowns() {
   });
 }
 
-renderSection("windows-os-grid", windowsOsVideos, "os", "os", "os-dropdown-menu");
-renderSection("windows-server-grid", windowsServerVideos, "server", "server", "server-dropdown-menu");
-renderSection("activities-grid", activityVideos, "activities", "activities", "activities-dropdown-menu");
+renderSection("windows-os-grid", windowsOsVideos, "os", "os");
+renderSection("windows-server-grid", windowsServerVideos, "server", "server");
+renderSection("activities-grid", activityVideos, "activities", "activities");
 setupDropdowns();
