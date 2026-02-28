@@ -134,6 +134,38 @@ function renderSection(containerId, videos, category, sectionKey, dropdownId) {
   });
 }
 
+function setupDropdowns() {
+  const dropdowns = Array.from(document.querySelectorAll(".dropdown"));
+
+  dropdowns.forEach((dropdown) => {
+    const trigger = dropdown.querySelector(".drop-trigger");
+
+    trigger.addEventListener("click", (event) => {
+      event.preventDefault();
+      const isOpen = dropdown.classList.contains("open");
+
+      dropdowns.forEach((item) => item.classList.remove("open"));
+      if (!isOpen) {
+        dropdown.classList.add("open");
+      }
+    });
+  });
+
+  document.addEventListener("click", (event) => {
+    const clickedInside = event.target.closest(".dropdown");
+    if (!clickedInside) {
+      dropdowns.forEach((item) => item.classList.remove("open"));
+    }
+  });
+
+  document.querySelectorAll(".dropdown-menu a").forEach((link) => {
+    link.addEventListener("click", () => {
+      dropdowns.forEach((item) => item.classList.remove("open"));
+    });
+  });
+}
+
 renderSection("windows-os-grid", windowsOsVideos, "os", "os", "os-dropdown-menu");
 renderSection("windows-server-grid", windowsServerVideos, "server", "server", "server-dropdown-menu");
 renderSection("activities-grid", activityVideos, "activities", "activities", "activities-dropdown-menu");
+setupDropdowns();

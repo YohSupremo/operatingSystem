@@ -78,6 +78,7 @@ body {
   display: inline-flex;
   align-items: center;
   gap: 0.35rem;
+  cursor: pointer;
 }
 
 .drop-trigger::after {
@@ -105,8 +106,13 @@ body {
 }
 
 .dropdown:hover .dropdown-menu,
-.dropdown:focus-within .dropdown-menu {
+.dropdown:focus-within .dropdown-menu,
+.dropdown.open .dropdown-menu {
   display: block;
+}
+
+.dropdown.open .drop-trigger::after {
+  transform: rotate(180deg);
 }
 
 .dropdown-menu a {
