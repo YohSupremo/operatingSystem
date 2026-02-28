@@ -29,6 +29,13 @@ const activityVideos = [
   { title: "Windows 2008-R2 Server: Group Policy", url: "https://youtu.be/dI5Tn5_Il00" }
 ];
 
+function slugify(text) {
+  return text
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+}
+
 function getYouTubeId(url) {
   const short = url.match(/youtu\.be\/([\w-]+)/);
   if (short && short[1]) {
@@ -75,13 +82,15 @@ function buildLearningContent(category, title) {
   };
 }
 
-function createVideoCard(video, category) {
+function createVideoCard(video, category, sectionKey) {
   const videoId = getYouTubeId(video.url);
   const embedUrl = `https://www.youtube.com/embed/${videoId}`;
   const learning = buildLearningContent(category, video.title);
+  const cardId = `${sectionKey}-${slugify(video.title)}`;
 
   const card = document.createElement("article");
   card.className = "video-card";
+  card.id = cardId;
 
   card.innerHTML = `
     <div class="video-wrapper">
@@ -108,14 +117,23 @@ function createVideoCard(video, category) {
   return card;
 }
 
-function renderSection(containerId, videos, category) {
+function renderSection(containerId, videos, category, sectionKey, dropdownId) {
   const grid = document.getElementById(containerId);
+  const dropdown = document.getElementById(dropdownId);
+
   videos.forEach((video) => {
-    const card = createVideoCard(video, category);
+    const card = createVideoCard(video, category, sectionKey);
     grid.appendChild(card);
+
+    const item = document.createElement("li");
+    const link = document.createElement("a");
+    link.href = `#${card.id}`;
+    link.textContent = video.title;
+    item.appendChild(link);
+    dropdown.appendChild(item);
   });
 }
 
-renderSection("windows-os-grid", windowsOsVideos, "os");
-renderSection("windows-server-grid", windowsServerVideos, "server");
-renderSection("activities-grid", activityVideos, "activities");
+renderSection("windows-os-grid", windowsOsVideos, "os", "os", "os-dropdown-menu");
+renderSection("windows-server-grid", windowsServerVideos, "server", "server", "server-dropdown-menu");
+renderSection("activities-grid", activityVideos, "activities", "activities", "activities-dropdown-menu");
